@@ -2,68 +2,120 @@
 Generate and bulid graphs from scratch
 
 """
+
 import random
+
+COST = 10
 
 
 class Server(object):
+
     """
-    Class node with needed arguments like watts, ram, processor.
+    Server with calculate funtion to show cost_power and resources like ram
     """
-    def __init__(self, proc, ram, core):
-        """
-        :param proc:
-        :param ram:
-        :param core:
-        """
-        self.core = core
+
+    def __init__(self, ram, proc, cores, power_supply, name):
+
         self.ram = ram
         self.proc = proc
+        self.cores = cores
+        self.power_supply = power_supply
+        self.name = name
 
-    def calculate(self, time):
+    def __str__(self):
+
+        return "Server with params ram:{0}, procesor:{1}, cores {2}. power consumption {3}".format(self.ram,
+                                                                                                   self.proc,
+                                                                                                   self.cores,
+                                                                                                   self.power_supply)
+
+    def __claculate(self):
         """
-        :param time:
-        :param work:
-        :return:
+        Calculate resources
         """
-        return time*self.proc*self.core*self.ram
+        return self.ram*self.proc*self.cores
+
+    def __calculate_cost(self, time):
+        """
+        calculate all costs
+        """
+        return COST*self.power_supply*time
+
+    def fit_results(self, time):
+        """
+        Show results
+        """
+        return self.__claculate(), self.__calculate_cost(time)
 
 
-class Node(Server):
+class Node(object):
+    """
+    Node consists of several different servers, saved in the array
+    """
 
     def __init__(self):
-        self.node = list()
-        self.root = False
 
-    def generate(self, servers, size):
+        self.server_tab = []
 
-        nodes = []
-        for i in range(0, size):
-            nodes.append(random.choice(servers))
-        self.node = nodes
+    def add_server(self, server):
 
-    def get_node(self):
+        self.server_tab.append(server)
 
-        return self.node
+    def calculate_all(self, time):
 
-class Graph(object):
+        return sum([server.fit_results(time)[0] for server in self.server_tab])
 
-    def __init__(self):
-        self.nodes = []
-        #self.root = self.nodes[0]
-        self.graph = {}
-        self.edges = []
+    def all_cost(self, time):
 
-    def add_edge(self, input, output):
-            self.edges.append((input, output))
+        return sum([server.fit_results(time)[1] for server in self.server_tab])
 
-    def add_node(self, node):
+    def __str__(self):
+        return "Node consists of {0}".format(self.server_tab)
 
-        self.nodes.append(node)
 
-    def generate_graph(self):
+HP = Server(1, 12, 3, 4, "HP")
+IBM = Server(4, 5, 6, 7, "IBM")
 
-        for node in self.nodes:
-            self.graph[node] = []
-            for edge in self.edges:
-                if node == edge[0]:
-                    self.graph[node].append(edge[1])
+tab1 = (HP, IBM)
+"""
+Generujemy sobie np 5 nodow spelniajacych okreslone warunki na prace tzn w szczegolnosci ogranicza nasz czas
+i w tym czasie funkcja calculate dla sumy wszystkich nodow musi byc wieksza lub rowna naszej przyjetej wartosci :D
+a w Nodzie np ma byc 4 serverow, kazdy node to rozwiazanie funkcji celu, czyli losujemy 5 rozwiazan
+"""
+
+
+def generate_nodes(graph_size, node_size, treshold, time, tmp=Node()):
+
+    nodes_list = []
+
+    dict_with_results = {}
+    while len(nodes_list) < graph_size:
+
+        for i in range(node_size):
+            server = random.choice(tab1)
+            tmp.add_server(server)
+
+        if tmp.calculate_all(time) >= treshold:
+            nodes_list.append(tmp)
+            dict_with_results[tuple(tmp.server_tab)] = tmp.all_cost(time)
+
+        tmp.server_tab = []
+
+    for name, cost in dict_with_results.items():
+        print name, cost
+
+    return dict_with_results
+
+"""Ziomy to nam wypluwa slownik z lista  obiektow serwerow oraz calkowitym kosztem takiej listy """
+
+"""
+TO DO
+1. genetyczny ja zrobie na lajcie
+2. Implementacja Grafu / drzewa - struktura noda jest wystarczy  dodac klase drzewko i git majonez walczymy o cos
+3. BFS
+4. Greedy
+5. Tabu search moze ktos sie podejmie
+6. wyniki porownanie algorytmow
+7. Trzeba sie zastanowic jakie dane wrzucamy do przemielenia zeby te nody nam sie jakos losowaly ok
+"""
+generate_nodes(4, 10, 400, 10)
