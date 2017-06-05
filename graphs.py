@@ -24,7 +24,7 @@ class Server(object):
 
     def __str__(self):
 
-        return "Server with params ram:{0}, procesor:{1}, cores {2}. power consumption {3}".format(self.ram,
+        return "Server with params ram:{0}, procesor:{1}, cores:{2}. power consumption:{3}".format(self.ram,
                                                                                                    self.proc,
                                                                                                    self.cores,
                                                                                                    self.power_supply)
@@ -73,10 +73,6 @@ class Node(object):
         return "Node consists of {0}".format(self.server_tab)
 
 
-HP = Server(1, 12, 3, 4, "HP")
-IBM = Server(4, 5, 6, 7, "IBM")
-
-tab1 = (HP, IBM)
 """
 Generujemy sobie np 5 nodow spelniajacych okreslone warunki na prace tzn w szczegolnosci ogranicza nasz czas
 i w tym czasie funkcja calculate dla sumy wszystkich nodow musi byc wieksza lub rowna naszej przyjetej wartosci :D
@@ -84,25 +80,24 @@ a w Nodzie np ma byc 4 serverow, kazdy node to rozwiazanie funkcji celu, czyli l
 """
 
 
-def generate_nodes(graph_size, node_size, treshold, time, tmp=Node()):
+def generate_nodes(graph_size, node_size, threshold, time, tab1,  tmp=Node()):
 
     nodes_list = []
 
     dict_with_results = {}
+
     while len(nodes_list) < graph_size:
 
         for i in range(node_size):
             server = random.choice(tab1)
             tmp.add_server(server)
 
-        if tmp.calculate_all(time) >= treshold:
+        if tmp.calculate_all(time) >= threshold and tmp.all_cost(time) not in dict_with_results.values():
+
             nodes_list.append(tmp)
             dict_with_results[tuple(tmp.server_tab)] = tmp.all_cost(time)
 
         tmp.server_tab = []
-
-    for name, cost in dict_with_results.items():
-        print name, cost
 
     return dict_with_results
 
@@ -118,4 +113,3 @@ TO DO
 6. wyniki porownanie algorytmow
 7. Trzeba sie zastanowic jakie dane wrzucamy do przemielenia zeby te nody nam sie jakos losowaly ok
 """
-generate_nodes(4, 10, 400, 10)
