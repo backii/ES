@@ -5,7 +5,7 @@ Generate and bulid graphs from scratch
 
 import random
 
-COST = 10
+COST = 0.54
 
 
 class Server(object):
@@ -25,10 +25,10 @@ class Server(object):
     def __str__(self):
 
         return "Server with params ram:{0}, procesor:{1}, cores:{2}. power consumption:{3} and name:{4}".format(self.ram,
-                                                                                                   self.proc,
-                                                                                                   self.cores,
-                                                                                                   self.power_supply,
-                                                                                                   self.name)
+                                                                                                                self.proc,
+                                                                                                                self.cores,
+                                                                                                                self.power_supply,
+                                                                                                                self.name)
 
     def __claculate(self):
         """
@@ -40,7 +40,7 @@ class Server(object):
         """
         calculate all costs
         """
-        return COST*self.power_supply*time
+        return round(COST*self.power_supply*time, 3)
 
     def fit_results(self, time):
         """
@@ -102,11 +102,9 @@ def generate_nodes(graph_size, node_size, threshold, time, tab1,  tmp=Node()):
 
     return dict_with_results
 
-"""Ziomy to nam wypluwa slownik z lista  obiektow serwerow oraz calkowitym kosztem takiej listy """
 
 """
 TO DO
-1. genetyczny ja zrobie na lajcie
 2. Implementacja Grafu / drzewa - struktura noda jest wystarczy  dodac klase drzewko i git majonez walczymy o cos
 3. BFS
 4. Greedy

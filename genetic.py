@@ -5,15 +5,10 @@ Genetic by MJ
 import random
 from graphs import Server, Node, generate_nodes
 
-HP = Server(1, 12, 3, 4, "HP")
-IBM = Server(4, 5, 6, 7, "IBM")
-
-tab1 = (HP, IBM)
-
 
 class Genetic(object):
 
-    def __init__(self, graph_size, node_size, threshold, time):
+    def __init__(self, graph_size, node_size, threshold, time, tab1):
 
         """
         Tworzymy rodzicow
@@ -26,11 +21,12 @@ class Genetic(object):
         for item in range(len(self.servers)):
             self.parents.append((self.servers[item], self.values[item]))
         self.parents.sort(key=lambda x: x[1])
+        print self.parents
 
     def crossover(self,  threshold, time):
 
-            list1 = self.parents[-1][0]
-            list2 = self.parents[-2][0]
+            list1 = self.parents[-2][0]
+            list2 = self.parents[-1][0]
 
             parent1 = Node()
             parent1.server_tab = list(list1)
@@ -54,7 +50,6 @@ class Genetic(object):
                     break
 
             self.parents.sort(key=lambda x: x[1])
-            print self.parents
 
     @staticmethod
     def mutate(node, tab1, threshold, time):
@@ -65,10 +60,10 @@ class Genetic(object):
             node.server_tab[random.randint(0, len(node.server_tab)-1)] = random.choice(tab1)
 
             if node.calculate_all(time) >= threshold:
-                if node.calculate_all(time) >= tmp_node.calculate_all(time):
+                if node.all_cost(time) <= tmp_node.all_cost(time):
                     break
 
-    def generate(self, threshold, time):
+    def generate(self, threshold, time, tab1):
         """ Do mutate and crossover again till I die """
 
         while len(self.parents) >= 2:
