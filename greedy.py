@@ -3,28 +3,15 @@ Greedy algorithm
 """
 import math
 from graphs import generate_nodes
-from main import SERVERS, tab_servers
-
-TIME = 10
-THRESHOLD = 1000
-
-MAX_RESOURCES = tab_servers[2].fit_results(TIME)[0]
-MIN_RESOURCES = tab_servers[1].fit_results(TIME)[0]
-
-print MIN_RESOURCES
-MAX_COST = (THRESHOLD/(MIN_RESOURCES + 0.0))*tab_servers[1].fit_results(TIME)[1]
-print MAX_COST
 
 
-def greedy_alg(counter= "'", THRESHOLD=THRESHOLD, time=TIME):
+def greedy_alg(counter, time, tab, MAX_COST, THRESHOLD):
 
-    items = [server.fit_results(time) for server in tab_servers]
+    items = [server.fit_results(time) for server in tab]
 
     server_cost = 0
     resource = 0
-    taken = []
 
-    i = 0
     #Jesli bierzemy tylko pod uwage koszt to
 
     if counter == "cost":
@@ -87,7 +74,6 @@ def greedy_alg(counter= "'", THRESHOLD=THRESHOLD, time=TIME):
     if counter == "divide":
         items.sort(key=lambda x: x[1]/(x[0] + 0.0))
 
-
         while resource < THRESHOLD and server_cost <= MAX_COST:
 
             for i in range(len(items)):
@@ -112,5 +98,3 @@ def greedy_alg(counter= "'", THRESHOLD=THRESHOLD, time=TIME):
         print server_cost
         print resource
 
-
-greedy_alg("divide")

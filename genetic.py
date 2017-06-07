@@ -3,24 +3,25 @@ Genetic by MJ
 """
 
 import random
-from graphs import Server, Node, generate_nodes
+from graphs import Node
 
 
 class Genetic(object):
 
-    def __init__(self, graph_size, node_size, threshold, time, tab1):
+    def __init__(self, all):
 
         """
         Tworzymy rodzicow
         """
 
-        self.all = generate_nodes(graph_size, node_size, threshold, time, tab1)
+        self.all = all
         self.servers = self.all.keys()
         self.values = self.all.values()
         self.parents = []
         for item in range(len(self.servers)):
             self.parents.append((self.servers[item], self.values[item]))
         self.parents.sort(key=lambda x: x[1])
+        self.parents.reverse()
         print self.parents
 
     def crossover(self,  threshold, time):
@@ -73,3 +74,4 @@ class Genetic(object):
             node = Node()
             node.server_tab = list(nodes[0])
             self.mutate(node, tab1, threshold, time)
+
