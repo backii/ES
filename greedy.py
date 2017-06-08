@@ -1,8 +1,6 @@
 """
 Greedy algorithm
 """
-import math
-from graphs import generate_nodes
 
 
 def greedy_alg(counter, time, tab, MAX_COST, THRESHOLD):

@@ -101,14 +101,3 @@ def generate_nodes(graph_size, node_size, threshold, time, tab1,  tmp=Node()):
         tmp.server_tab = []
 
     return dict_with_results
-
-
-"""
-TO DO
-2. Implementacja Grafu / drzewa - struktura noda jest wystarczy  dodac klase drzewko i git majonez walczymy o cos
-3. BFS
-4. Greedy
-5. Tabu search moze ktos sie podejmie
-6. wyniki porownanie algorytmow
-7. Trzeba sie zastanowic jakie dane wrzucamy do przemielenia zeby te nody nam sie jakos losowaly ok
-"""

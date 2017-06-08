@@ -10,6 +10,10 @@ from greedy import greedy_alg
 TIME = 10
 THRESHOLD = 1000
 
+#FINE_COST = (((THRESHOLD + 0.0))/320) *TIME *0.7*0.55 +
+
+print (THRESHOLD/320) * TIME * 0.7*0.55*0.54 + TIME *0.7*0.54
+
 SERVERS = {
             "Serwer HP ProLiant ML350 gen9": (16, 1, 8, 0.65*0.5, "Serwer HP ProLiant ML350 gen9"),
             "Serwer Fujitsu RX2520 M1": (8, 1, 4, 0.65*0.45, "Serwer Fujitsu RX2520 M1"),
@@ -45,14 +49,11 @@ MAX_RESOURCES = tab_servers[2].fit_results(TIME)[0]
 MIN_RESOURCES = tab_servers[1].fit_results(TIME)[0]
 MAX_COST = (THRESHOLD/(MIN_RESOURCES + 0.0))*tab_servers[1].fit_results(TIME)[1]
 
+#greedy_alg("divide", TIME, tab_servers, MAX_COST, THRESHOLD)
 
-"""
-Ok zioemczki przyjmiemy dla latwosci, ze kompy sa obciazone w 80 % 
-Zasilacz na straty cieplne i inne pierdy traci 15% wiec od mocy zsilacza musimy dojac 35% i mamy pobor 
-"""
+nodes = generate_nodes(4, 5,THRESHOLD,TIME,tab_servers)
+#ew = Genetic(nodes)
+#new.generate(THRESHOLD, TIME, tab_servers)
+#print new.parents
 
-tab = generate_nodes(5, 5, THRESHOLD, TIME, tab_servers)
-
-gen = Genetic(tab)
-gen.generate(THRESHOLD, TIME, tab_servers)
-print gen.parents
+print hill_climbing(nodes, MAX_COST)
